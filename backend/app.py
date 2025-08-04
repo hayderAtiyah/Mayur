@@ -21,7 +21,7 @@ def user_info():
         "name": "Mayur",
         "age": 50,
         "skills": ["Python", "Flask", "React"],
-        "profile": {"github": "", "location": "USA"},
+        "profile": {"github": "4wqrs12", "location": "USA"},
     }
     return jsonify(user_data)
 

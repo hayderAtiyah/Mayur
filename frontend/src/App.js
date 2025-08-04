@@ -33,6 +33,7 @@ function App() {
       <p>name: {user.name}</p>
       <p>age: {user.age}</p>
       <p>skills: {user.skills.join(", ")}</p>
+      <p>profile: {user.skills.join(", ")}</p>
     </div>
   );
 }
