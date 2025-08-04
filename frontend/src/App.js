@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import "./App.css";
 
 function App() {
@@ -7,17 +7,20 @@ function App() {
 
   const [user, setUser] = useState(null);
 
-  useEffect(() => {
-    fetch("http://127.0.0.1:5000/api/message")
-      .then((res) => res.json())
-      .then((data) => setMessage(data.message));
-  });
+  // useEffect(() => {
+  //   fetch("http://127.0.0.1:5000/api/message")
+  //     .then((res) => res.json())
+  //     .then((data) => setMessage(data.message));
+  // });
 
-  useEffect(() => {
-    fetch("http://127.0.0.1:5000/api/age")
-      .then((res) => res.json())
-      .then((data) => setAge(data.age));
-  });
+  // useEffect(() => {
+  //   fetch("http://127.0.0.1:5000/api/age")
+  //     .then((res) => res.json())
+  //     .then((data) => setAge(data.age));
+  // });
+
+
+
 
   useEffect(() => {
     fetch("http://127.0.0.1:5000/api/user")
@@ -28,12 +31,16 @@ function App() {
   return (
     <div className="App">
       <h1>Flask + React</h1>
-      <p>{message}</p>
-      <p>{age} years old</p>
-      <p>name: {user.name}</p>
+      <p>hello</p>
+      {/* <p>{message}</p>
+      <p>{age} years old</p> */}
+      {/* <p>name: {user.name}</p>
       <p>age: {user.age}</p>
       <p>skills: {user.skills.join(", ")}</p>
-      <p>profile: {user.skills.join(", ")}</p>
+      <p>profile: {user.skills.join(", ")}</p> */}
+      <p>github: {user.profile.github}</p>
+      <p>location: {user.profile.location}</p>
+      <button onClick={() => console.log(user)}>click</button>
     </div>
   );
 }
