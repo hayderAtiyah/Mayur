@@ -7,8 +7,6 @@ function App() {
   const values = ["author", "rating", "title", "year"];
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [pval, setPVal] = useState("");
-  const [buttonState, setButtonState] = useState(true);
 
   function getValues(key) {
     return bookInfo.map((book) => book[key]);
