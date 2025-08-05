@@ -1,18 +1,29 @@
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
 
 function App() {
   const [user, setUser] = useState(null);
   const [bookInfo, setBookInfo] = useState([]);
   const values = ["author", "rating", "title", "year"];
+  const [name, setName] = useState("");
 
-  function getValues(val, index) {
-    let arr = [];
-    for (let book of bookInfo[index]) {
-      arr.push(book[val])
-    }
+  function getValues(key) {
+    return bookInfo.map((book) => book[key]);
+  }
+  function handleChange(e) {
+    console.log(name);
+    setName(e.target.value);
+  }
 
-    return arr
+  function handleSubmit() {
+    console.log("hello there");
+    fetch("http://127.0.0.1:5000/api/add-name", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ name }),
+    }).then((res) => res.json);
   }
 
   useEffect(() => {
@@ -23,19 +34,19 @@ function App() {
 
   useEffect(() => {
     fetch("http://localhost:5000/api/books")
-    .then((res) => res.json())
-    .then((data) => setBookInfo(data));
+      .then((res) => res.json())
+      .then((data) => setBookInfo(data));
   }, []);
-  
+
   return (
     <div className="App">
-      <h1>Flask + React</h1>
-      <p>hello</p>
-      <button onClick={() => console.log(bookInfo)}>click</button>
-      <p>{getValues("author", 0).join(", ")}</p>
-      <p>{getValues("rating").join(", ")}</p>
-      <p>{getValues("title").join(", ")}</p>
-      <p>{getValues("year").join(", ")}</p>
+      <form onSubmit={handleSubmit}>
+        <p>Enter your name: </p>
+        <input type="text" value={name} onChange={handleChange} />
+
+        <br />
+        <button type="submit">submit</button>
+      </form>
     </div>
   );
 }

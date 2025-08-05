@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 from flask_cors import CORS
 
 app = Flask(__name__)
@@ -25,42 +25,27 @@ def user_info():
     }
     return jsonify(user_data)
 
+
+@app.route("/api/add-name", methods=["POST"])
+def add_name():
+    data = request.get_json()
+    name = data.get("name")
+
+    with open("names.txt", "a") as file:
+        file.write(name)
+
+
 @app.route("/api/books")
 def book_info():
-    book1 = {
-        "title": "title1",
-        "author": "author1",
-        "year": 1,
-        "rating": 1
-    }
+    book1 = {"title": "title1", "author": "author1", "year": 1, "rating": 1}
 
-    book2 = {
-        "title": "title2",
-        "author": "author2",
-        "year": 2,
-        "rating": 2
-    }
+    book2 = {"title": "title2", "author": "author2", "year": 2, "rating": 2}
 
-    book3 = {
-        "title": "title3",
-        "author": "author3",
-        "year": 3,
-        "rating": 3
-    }
+    book3 = {"title": "title3", "author": "author3", "year": 3, "rating": 3}
 
-    book4 = {
-        "title": "title4",
-        "author": "author4",
-        "year": 4,
-        "rating": 4
-    }
+    book4 = {"title": "title4", "author": "author4", "year": 4, "rating": 4}
 
-    book5 = {
-        "title": "title5",
-        "author": "author5",
-        "year": 5,
-        "rating": 5
-    }
+    book5 = {"title": "title5", "author": "author5", "year": 5, "rating": 5}
 
     return jsonify([book1, book2, book3, book4, book5])
 
