@@ -2,25 +2,18 @@ import { use, useEffect, useState } from "react";
 import "./App.css";
 
 function App() {
-  const [message, setMessage] = useState("hello");
-  const [age, setAge] = useState(90);
-
   const [user, setUser] = useState(null);
+  const [bookInfo, setBookInfo] = useState([]);
+  const values = ["author", "rating", "title", "year"];
 
-  // useEffect(() => {
-  //   fetch("http://127.0.0.1:5000/api/message")
-  //     .then((res) => res.json())
-  //     .then((data) => setMessage(data.message));
-  // });
+  function getValues(val, index) {
+    let arr = [];
+    for (let book of bookInfo[index]) {
+      arr.push(book[val])
+    }
 
-  // useEffect(() => {
-  //   fetch("http://127.0.0.1:5000/api/age")
-  //     .then((res) => res.json())
-  //     .then((data) => setAge(data.age));
-  // });
-
-
-
+    return arr
+  }
 
   useEffect(() => {
     fetch("http://127.0.0.1:5000/api/user")
@@ -28,19 +21,21 @@ function App() {
       .then((data) => setUser(data));
   }, []);
 
+  useEffect(() => {
+    fetch("http://localhost:5000/api/books")
+    .then((res) => res.json())
+    .then((data) => setBookInfo(data));
+  }, []);
+  
   return (
     <div className="App">
       <h1>Flask + React</h1>
       <p>hello</p>
-      {/* <p>{message}</p>
-      <p>{age} years old</p> */}
-      {/* <p>name: {user.name}</p>
-      <p>age: {user.age}</p>
-      <p>skills: {user.skills.join(", ")}</p>
-      <p>profile: {user.skills.join(", ")}</p> */}
-      <p>github: {user.profile.github}</p>
-      <p>location: {user.profile.location}</p>
-      <button onClick={() => console.log(user)}>click</button>
+      <button onClick={() => console.log(bookInfo)}>click</button>
+      <p>{getValues("author", 0).join(", ")}</p>
+      <p>{getValues("rating").join(", ")}</p>
+      <p>{getValues("title").join(", ")}</p>
+      <p>{getValues("year").join(", ")}</p>
     </div>
   );
 }

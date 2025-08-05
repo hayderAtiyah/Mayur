@@ -20,10 +20,49 @@ def user_info():
     user_data = {
         "name": "Mayur",
         "age": 50,
-        "skills": ["Python", "Flask", "React"],
+        "skills": ["Python", "Flask", "React", "JS"],
         "profile": {"github": "4wqrs12", "location": "USA"},
     }
     return jsonify(user_data)
+
+@app.route("/api/books")
+def book_info():
+    book1 = {
+        "title": "title1",
+        "author": "author1",
+        "year": 1,
+        "rating": 1
+    }
+
+    book2 = {
+        "title": "title2",
+        "author": "author2",
+        "year": 2,
+        "rating": 2
+    }
+
+    book3 = {
+        "title": "title3",
+        "author": "author3",
+        "year": 3,
+        "rating": 3
+    }
+
+    book4 = {
+        "title": "title4",
+        "author": "author4",
+        "year": 4,
+        "rating": 4
+    }
+
+    book5 = {
+        "title": "title5",
+        "author": "author5",
+        "year": 5,
+        "rating": 5
+    }
+
+    return jsonify([book1, book2, book3, book4, book5])
 
 
 if __name__ == "__main__":
