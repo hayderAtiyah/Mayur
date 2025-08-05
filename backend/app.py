@@ -32,7 +32,19 @@ def add_name():
     name = data.get("name")
 
     with open("names.txt", "a") as file:
-        file.write(name)
+        file.write(name + "\n")
+
+
+@app.route("/api/add-email", methods=["POST"])
+def add_email():
+    data = request.get_json()
+    email = data.get("email")
+    parts = email.split("@")
+    user = parts[0]
+    domain = parts[1]
+
+    with open("emails.txt", "a") as file:
+        file.write(f"User: {user}, Domain: {domain}" + "\n")
 
 
 @app.route("/api/books")
@@ -51,4 +63,4 @@ def book_info():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, port=5050)
