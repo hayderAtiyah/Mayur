@@ -1,4 +1,4 @@
-#!/home/mayur/Documents/github_repos/Mayur/backend/venv/bin/python3
+#!/home/mayur/Documents/github_repos/tutorial/Mayur/backend/venv/bin/python3
 # -*- coding: utf-8 -*-
 import re
 import sys
