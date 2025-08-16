@@ -1,3 +1,4 @@
+import re
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 from pymongo import MongoClient
@@ -49,16 +50,15 @@ def delete_name():
 @app.route("/api/search-name", methods=["POST"])
 def search_name():
     try:
-        data = request.get_json()
+        data = request.get_json(force=True)
         name = data.get("name")
-        names_col.find_one({"names": name})
+        doc = names_col.find_one({"name": {"$regex": f"^{re.escape(name)}$", "$options": "i"}},
+                                 {"_id": 0})
+        if not doc:
+            return jsonify({"success": False, "message": "Name not found"})
         return jsonify({"success": True, "message": "Name found"})
     except Exception as e:
         return jsonify({"success": False, "error": str(e)}), 500
-
-
-if __name__ == "__main__":
-    app.run(debug=True)
 
 
 if __name__ == "__main__":

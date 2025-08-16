@@ -70,11 +70,11 @@ function App() {
         throw new Error("Server error "+res.status)
       }
       const json = await res.json();
-      if (json.success && json.data) {
+      if (json.success) {
         setResult("Name found");
 
       } else {
-        setResult("Name not found");
+        setResult(json.message || "Name not found");
       }
       setSearchName("");
     } catch (err) {
