@@ -1,5 +1,6 @@
 import re
 import os
+import random
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 from pymongo import MongoClient
@@ -33,6 +34,21 @@ def add_message():
             {"message": message, "createdAt": datetime.utcnow()})
 
         return jsonify({"success": True, "message": "Message saved"})
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)})
+
+
+@app.route("/api/get-random-message")
+def random_message():
+    # docs = message_col.find()
+    # message_list = [doc["message"] for doc in docs]
+
+    try:
+        docs = message_col.find()
+        message_list = [doc["message"] for doc in docs]
+        if not message_list:
+            return jsonify({"success": False, "message": "No messages yet. Be the first person to create one!"})
+        return jsonify({"success": True, "message": "Got random message", "randomMessage": random.choice(message_list)})
     except Exception as e:
         return jsonify({"success": False, "error": str(e)})
 
