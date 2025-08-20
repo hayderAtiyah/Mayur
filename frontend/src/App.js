@@ -32,33 +32,59 @@ function App() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({message: input})
+        body: JSON.stringify({ message: input }),
       });
       if (!res.ok) {
-        throw new Error("Server error "+res.status);
+        throw new Error("Server error " + res.status);
       }
       setInput("");
       const json = await res.json();
       if (json.success) {
-        setSendResult("Data saved!")
+        setSendResult("Data saved!");
       } else {
-        setSendResult(json.message)
+        setSendResult(json.message);
       }
     } catch (e) {
       console.log(`Error: ${e}`);
     }
   }
 
-  return(
-    <div>
-      <form onSubmit={handleSubmit}>
-        <h1>Enter your message</h1>
-        <textarea placeholder="Enter your message" onChange={handleChange} value={input}></textarea>
-        <button type="submit">Send</button>
-        {sendResult !== "" && <p>{sendResult}</p>}
-      </form>
-      <div>
-        <p>{randomMessage}</p>
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-slate-100 flex items-center justify-center p-6">
+      <div className="w-full max-w-xl rounded-2xl border border-white/10 bg-white/5 backdrop-blur shadow-xl">
+        <form onSubmit={handleSubmit} className="p-6 space-y-5">
+          <h1 className="text-2xl font-semibold tracking-tight">
+            <span className="bg-gradient-to-r from-fuchsia-500 via-purple-500 to-indigo-500 bg-clip-text text-transparent">
+              Enter your message
+            </span>
+          </h1>
+
+          <textarea
+            className="w-full h-32 resize-y rounded-xl border border-white/10 bg-slate-900/60 p-4 text-slate-100 placeholder:text-slate-400 outline-none ring-0 focus:border-indigo-400 focus:bg-slate-900/80 transition"
+            placeholder="Type something thoughtful..."
+            onChange={handleChange}
+            value={input}
+          />
+
+          <div className="flex items-center justify-between">
+            <button
+              type="submit"
+              className="inline-flex items-center justify-center rounded-xl px-5 py-2.5 text-sm font-medium bg-indigo-500 hover:bg-indigo-600 active:bg-indigo-700 text-white shadow-lg shadow-indigo-500/25 transition"
+            >
+              Send
+            </button>
+
+            {sendResult !== "" && (
+              <p className="text-sm text-emerald-300">{sendResult}</p>
+            )}
+          </div>
+        </form>
+
+        <div className="border-t border-white/10 px-6 py-5">
+          <p className="text-sm text-slate-300">
+            {randomMessage || "Waiting for a random message..."}
+          </p>
+        </div>
       </div>
     </div>
   );
