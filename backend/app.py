@@ -38,7 +38,8 @@ def add_message():
         if not message:
             return jsonify({"success": False, "message": "Message not given"})
 
-        message_col.insert_one({"message": message, "createdAt": datetime.utcnow()})
+        message_col.insert_one(
+            {"message": message, "createdAt": datetime.utcnow(), "thumbsUp": 0, "thumbsDown": 0})
         return jsonify({"success": True, "message": "Message saved"})
     except Exception as e:
         return jsonify({"success": False, "error": str(e)}), 500
@@ -63,9 +64,39 @@ def random_message():
             {
                 "success": True,
                 "message": "Got random message",
-                "randomMessage": doc["message"],
+                "randomMessage": doc.get("message", ""),
+                "thumbsUp": doc.get("thumbsUp", 0),
+                "thumbsDown": doc.get("thumbsDown", 0),
+                "messageId": str(doc["_id"])
             }
         )
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 500
+
+
+@app.route("/api/rate-message", methods=["POST"])
+def rate_message():
+    try:
+        data = request.get_json()
+        msg_text = data.get("message")
+        rating = data.get("rating")
+        document = message_col.find_one({"message": msg_text})
+        if not document:
+            return jsonify({"success": False, "message": "Message was not found"})
+        inc_field = "thumbsUp" if rating == "up" else "thumbsDown"
+        set_missing = {}
+        if "thumbsUp" not in document:
+            set_missing["thumbsUp"] = 0
+        if "thumbsDown" not in document:
+            set_missing["thumbsDown"] = 0
+
+        if set_missing:
+            message_col.update_one({"_id": document["_id"]}, {
+                                   "$set": set_missing})
+        
+        message_col.update_one({"_id": document["_id"]}, {"$inc": {inc_field: 1} })
+        newUpdate = message_col.find_one({"_id": document["_id"]}, {"thumbsUp": 1, "thumbsDown": 1})
+        return jsonify({"success": True, "thumbsUp": newUpdate.get("thumbsUp", 0), "thumbsDown": newUpdate.get("thumbsDown", 0)})
     except Exception as e:
         return jsonify({"success": False, "error": str(e)}), 500
 

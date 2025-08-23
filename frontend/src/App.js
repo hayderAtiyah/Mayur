@@ -5,9 +5,36 @@ function App() {
   const [input, setInput] = useState("");
   const [sendResult, setSendResult] = useState("");
   const [randomMessage, setRandomMessage] = useState("");
+  const [thumbsUp, setThumbsUp] = useState(0);
+  const [thumbsDown, setThumbsDown] = useState(0);
+  const [messageId, setMessageId] = useState(0);
+  const [rated, setRated] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+  const [isDisabled, setIsDisabled] = useState(false);
 
   function handleChange(e) {
     setInput(e.target.value);
+  }
+
+  async function handleRate(value) {
+    try {
+      const res = await fetch("http://localhost:5000/api/rate-message", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+         body: JSON.stringify({ message: randomMessage, rating: value}),
+      });
+      if (!res.ok) {
+        throw new Error(`Server error: ${res.status}`)
+      }
+      const json = await res.json();
+      setRated(true);
+      setThumbsUp(json.thumbsUp ?? thumbsUp+(value==="up" ? 1 : 0)) 
+      setThumbsDown(json.thumbsDown ?? thumbsDown+(value==="down" ? 1 : 0))
+    } catch (e) {
+      console.error(`Error: ${e}`)
+    }
   }
 
   async function fetchMessages() {
@@ -15,10 +42,15 @@ function App() {
     const json = await res.json();
     if (json.success) {
       setRandomMessage(json.randomMessage);
+      setThumbsUp(json.thumbsUp);
+      setThumbsDown(json.thumbsDown);
+      setMessageId(json.messageId);
+      console.log(thumbsUp, thumbsDown, messageId)
     } else {
       setRandomMessage(json.message);
     }
   }
+
 
   useEffect(() => {
     fetchMessages();
@@ -40,7 +72,10 @@ function App() {
       setInput("");
       const json = await res.json();
       if (json.success) {
+        setSubmitted(true);
+        setIsDisabled(true);
         setSendResult("Data saved!");
+        // fetchMessages();
       } else {
         setSendResult(json.message);
       }
@@ -67,12 +102,14 @@ function App() {
           />
 
           <div className="flex items-center justify-between">
+            {isDisabled ? <p>Thanks for submitting!</p> :  
             <button
               type="submit"
               className="inline-flex items-center justify-center rounded-xl px-5 py-2.5 text-sm font-medium bg-indigo-500 hover:bg-indigo-600 active:bg-indigo-700 text-white shadow-lg shadow-indigo-500/25 transition"
             >
               Send
-            </button>
+            </button>}
+           
 
             {sendResult !== "" && (
               <p className="text-sm text-emerald-300">{sendResult}</p>
@@ -81,9 +118,36 @@ function App() {
         </form>
 
         <div className="border-t border-white/10 px-6 py-5">
-          <p className="text-sm text-slate-300">
+          <p className="text-sm text-slate-300 mb-3">
             {randomMessage || "Waiting for a random message..."}
           </p>
+
+          {randomMessage && (
+            
+            <div className="flex gap-3">
+
+              {rated ? <p>Thanks for rating the message</p> : 
+              <div>
+                <button
+                  onClick={() => handleRate("up")}
+                  className="px-3 py-2 rounded-lg bg-emerald-500 hover:bg-emerald-600 text-white text-sm font-medium shadow"
+                >
+                  👍 Thumbs Up
+                </button>
+                
+                <button
+                  onClick={() => handleRate("down")}
+                  className="px-3 py-2 rounded-lg bg-rose-500 hover:bg-rose-600 text-white text-sm font-medium shadow"
+                >
+                  👎 Thumbs Down
+                </button>
+              </div>
+              }
+              <p>👍{thumbsUp}  👎{thumbsDown}</p>
+
+              
+            </div>
+          )}
         </div>
       </div>
     </div>
