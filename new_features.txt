@@ -1,6 +1,7 @@
 [✅] display how ratings before clicking
 [✅] hide thumbsup and down after clicking one of them, then say thanks for rating
+[✅] check for same messages
 
-check for same messages
 navbar (home, highest rated messages, lowest rated messages, about)
 cool animation after rating message
+OpenAI message checking innappropiate

@@ -35,6 +35,8 @@ def add_message():
     try:
         data = request.get_json(force=True)
         message = (data.get("message") or "").strip()
+        if message_col.find_one({"message": message}):
+            return jsonify({"success": False, "message": f"{message} already exists"})
         if not message:
             return jsonify({"success": False, "message": "Message not given"})
 
@@ -97,6 +99,19 @@ def rate_message():
         message_col.update_one({"_id": document["_id"]}, {"$inc": {inc_field: 1} })
         newUpdate = message_col.find_one({"_id": document["_id"]}, {"thumbsUp": 1, "thumbsDown": 1})
         return jsonify({"success": True, "thumbsUp": newUpdate.get("thumbsUp", 0), "thumbsDown": newUpdate.get("thumbsDown", 0)})
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 500
+
+@app.route("/api/get-highest")
+def get_highest():
+    try:
+        limit = int(request.args.get("limit", 3))
+        
+        highest = message_col.find({}, {"message": 1, "thumbsUp": 1, "createdAt": 1}).sort([("thumbsUp", -1), ("createdAt", -1)]).limit(limit)
+
+        items = [{"id": str(i["_id"]), "message": i.get("message", ""), "thumbsUp": i.get("thumbsUp", 0), "createdAt": i.get("createdAt", "") } for i in highest]
+
+        return jsonify({"success": True, "message": "3 highest recieved", "data": items})
     except Exception as e:
         return jsonify({"success": False, "error": str(e)}), 500
 
