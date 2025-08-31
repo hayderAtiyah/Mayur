@@ -3,6 +3,7 @@ import Home from "./components/Home";
 import Navbar from "./components/Navbar";
 import HighestReview from "./components/HighestReview";
 import LowestReview from "./components/LowestReview";
+import AllMessages from "./components/AllMessages";
 import About from "./components/About";
 
 function App() {
@@ -13,6 +14,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/highest" element={<HighestReview />} />
         <Route path="/lowest" element={<LowestReview />} />
+        <Route path="/all-messages" element={<AllMessages/>} />
         <Route path="/about" element={<About />} />
       </Routes>
     </div>

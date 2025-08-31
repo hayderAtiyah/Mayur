@@ -143,6 +143,64 @@ def get_highest():
     except Exception as e:
         return jsonify({"success": False, "error": str(e)}), 500
 
+@app.route("/api/get-lowest")
+def get_lowest():
+    try:
+        limit = int(request.args.get("limit", 3))
+
+        lowest = (
+            message_col.find({}, {"message": 1, "thumbsDown": 1, "createdAt": 1})
+            .sort([("thumbsDown", -1), ("createdAt", -1)])
+            .limit(limit)
+        )
+
+        items = [
+            {
+                "id": str(i["_id"]),
+                "message": i.get("message", ""),
+                "thumbsDown": i.get("thumbsDown", 0),
+                "createdAt": i.get("createdAt", ""),
+            }
+            for i in lowest
+        ]
+
+        return jsonify(
+            {"success": True, "message": "3 lowest recieved", "data": items}
+        )
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 500
+
+@app.route("/api/all-messages")
+def all_messages():
+    try:
+        query = request.args.get("q", "").strip()
+        limit = int(request.args.get("limit", 10))
+        skip = int(request.args.get("skip", 0))
+        filter_query = {}
+        if query:
+            filter_query = {"message": {"$regex": query, "$options": "i"}}
+        
+        messages = message_col.find(filter_query, {"message": 1, "thumbsDown": 1, "createdAt": 1}).sort([("createdAt", -1)]).skip(skip).limit(limit)
+
+        items = [
+            {
+                "id": str(i["_id"]),
+                "message": i.get("message", ""),
+                "thumbsUp": i.get("thumbsUp", 0),
+                "thumbsDown": i.get("thumbsDown", 0),
+                "createdAt": i.get("createdAt", ""),
+            }
+
+            for i in messages
+        ]
+
+        total = message_col.count_documents(filter_query)
+        return jsonify({"success": True, "data": items, "total": total, "limit": limit, "skip": skip})
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 500
+
+
+
 
 if __name__ == "__main__":
     app.run(debug=True)
