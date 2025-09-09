@@ -170,6 +170,8 @@ def get_lowest():
     except Exception as e:
         return jsonify({"success": False, "error": str(e)}), 500
 
+
+
 @app.route("/api/all-messages")
 def all_messages():
     try:
@@ -199,8 +201,31 @@ def all_messages():
     except Exception as e:
         return jsonify({"success": False, "error": str(e)}), 500
 
+@app.route("/api/message-difference")
+def message_difference():
+    try:
+        limit = int(request.args.get("limit", 3))
+        difference = [
+            {"$addFields": {"score": {"$subtract": ["$thumbsUp", "$thumbsDown"]}}},
+            {"$sort": {"score": -1, "createdAt": -1}}, 
+            {"$limit": limit},
+        ]
 
+        result = list(message_col.aggregate(difference))
+        items = [
+            {"id": str(i["_id"]),
+             "thumbsUp": i.get("thumbsUp", 0),
+             "thumbsDown": i.get("thumbsDown", 0),
+             "message": i.get("message", ""),
+             "score": i.get("score", 0),
+             "createdAt": i.get("createdAt", "")
+            }
 
+            for i in result
+        ]
+        return jsonify({"success": True, "message": "Differences found. ", "data": items})
+    except Exception as e:
+        return jsonify({"sucess": False, "error": str(e)}), 500
 
 if __name__ == "__main__":
     app.run(debug=True)

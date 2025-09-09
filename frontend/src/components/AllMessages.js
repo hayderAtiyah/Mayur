@@ -12,9 +12,9 @@ function AllMessages() {
     async function fetchMessages(query=search, current=page) {
         try {
             setLoading(true);
-            const skip = 5;
+            const skip = (current-1)*limit;
             
-            const res = await fetch(`http://localhost:5000/api/messages?q=${encodeURIComponent(query)}&limit=${limit}&skip=${skip}`
+            const res = await fetch(`http://localhost:5000/api/all-messages?q=${encodeURIComponent(query)}&limit=${limit}&skip=${skip}`
       );
             const json = await res.json();
             setMessages(json.data);
@@ -28,10 +28,10 @@ function AllMessages() {
 
     useEffect(()=> {
         fetchMessages(search, page);
-    }, []);
+    }, [search, page]);
 
 const totalPages = Math.ceil(total / limit);
-return (
+return (    
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-slate-100 p-6">
       <div className="w-full max-w-3xl mx-auto rounded-2xl border border-white/10 bg-white/5 backdrop-blur shadow-xl p-6">
         {/* Title */}
