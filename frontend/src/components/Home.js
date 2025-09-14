@@ -51,9 +51,9 @@ function Home() {
       }
     
     
-      useEffect(() => {
-        fetchMessages();
-      }, []);
+      // useEffect(() => {
+      //   fetchMessages();
+      // }, []);
     
       async function handleSubmit(e) {
         e.preventDefault();
@@ -71,6 +71,7 @@ function Home() {
           setInput("");
           const json = await res.json();
           if (json.success) {
+            fetchMessages();
             setSubmitted(true);
             setIsDisabled(true);
             setSendResult("Data saved!");

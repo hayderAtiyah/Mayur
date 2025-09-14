@@ -5,6 +5,7 @@ import HighestReview from "./components/HighestReview";
 import LowestReview from "./components/LowestReview";
 import AllMessages from "./components/AllMessages";
 import About from "./components/About";
+import CleanMessages from "./components/CleanMessages";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Route path="/lowest" element={<LowestReview />} />
         <Route path="/all-messages" element={<AllMessages/>} />
         <Route path="/about" element={<About />} />
+        <Route path="/clean" element={<CleanMessages/>}/>
       </Routes>
     </div>
   );

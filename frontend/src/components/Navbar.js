@@ -28,6 +28,7 @@ function Navbar() {
             >
               Lowest Review
             </Link>
+            <Link to="/clean">Clean Messages</Link>
             <Link to="/all-messages" className="hover:text-indigo-400 transition-colors duration-200">All Messages</Link>
             <Link
               to="/about"
@@ -35,6 +36,7 @@ function Navbar() {
             >
               About
             </Link>
+            
           </div>
         </div>
       </div>
