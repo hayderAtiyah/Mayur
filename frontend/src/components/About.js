@@ -8,7 +8,7 @@ function About() {
 
         <p className="text-slate-300 leading-relaxed mb-4">
           Welcome to{" "}
-          <span className="font-semibold text-indigo-300">MyApp</span> Website where people can leave messages and others can like, dislike these messages. You can view the highest and lowest rated messages and search messages that others have created.
+          <span className="font-semibold text-indigo-300">MessageShare</span> Website where people can leave messages and others can like, dislike these messages. You can view the highest and lowest rated messages and search messages that others have created.
         </p>
 
         <p className="text-slate-300 leading-relaxed mb-4">

@@ -6,7 +6,7 @@ function Navbar() {
       <div className="max-w-6xl mx-auto px-4">
         <div className="flex justify-between items-center h-16">
           {/* Logo / Brand */}
-          <div className="text-2xl font-bold text-indigo-400">MyApp</div>
+          <div className="text-2xl font-bold text-indigo-400">MessageShare</div>
 
           {/* Links */}
           <div className="flex space-x-6">
@@ -25,7 +25,7 @@ function Navbar() {
             <Link
               to="/lowest"
               className="hover:text-indigo-400 transition-colors duration-200"
-            >
+            > 
               Lowest Review
             </Link>
             <Link to="/clean">Clean Messages</Link>
