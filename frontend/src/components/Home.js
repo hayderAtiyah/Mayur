@@ -17,7 +17,7 @@ function Home() {
     
       async function handleRate(value) {
         try {
-          const res = await fetch("http://localhost:5000/api/rate-message", {
+          const res = await fetch("https://mayur-544z.onrender.com/api/rate-message", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -37,7 +37,7 @@ function Home() {
       }
     
       async function fetchMessages() {
-        const res = await fetch("http://localhost:5000/api/get-random-message");
+        const res = await fetch("https://mayur-544z.onrender.com/api/get-random-message");
         const json = await res.json();
         if (json.success) {
           setRandomMessage(json.randomMessage);
@@ -58,7 +58,7 @@ function Home() {
       async function handleSubmit(e) {
         e.preventDefault();
         try {
-          const res = await fetch("http://localhost:5000/api/add-message", {
+          const res = await fetch("https://mayur-544z.onrender.com/api/add-message", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",

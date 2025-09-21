@@ -5,7 +5,7 @@ function LowestReview() {
 
   async function fetchMessage() {
     try {
-      const res = await fetch("http://localhost:5000/api/get-lowest");
+      const res = await fetch("https://mayur-544z.onrender.com/api/get-lowest");
       const json = await res.json();
       setLowest(json.data);
       if (!res.ok) {

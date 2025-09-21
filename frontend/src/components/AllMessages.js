@@ -14,7 +14,7 @@ function AllMessages() {
             setLoading(true);
             const skip = (current-1)*limit;
             
-            const res = await fetch(`http://localhost:5000/api/all-messages?q=${encodeURIComponent(query)}&limit=${limit}&skip=${skip}`
+            const res = await fetch(`https://mayur-544z.onrender.com/api/all-messages?q=${encodeURIComponent(query)}&limit=${limit}&skip=${skip}`
       );
             const json = await res.json();
             setMessages(json.data);

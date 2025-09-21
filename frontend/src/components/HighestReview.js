@@ -5,7 +5,7 @@ function HighestReview() {
 
   async function fetchMessage() {
     try {
-      const res = await fetch("http://localhost:5000/api/get-highest");
+      const res = await fetch("https://mayur-544z.onrender.com/api/get-highest");
       const json = await res.json();
       setHighest(json.data);
       if (!res.ok) {

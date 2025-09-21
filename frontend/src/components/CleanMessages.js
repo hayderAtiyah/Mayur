@@ -6,7 +6,7 @@ function CleanMessages() {
 
     async function fetchClean() {
         try {
-            const res = await fetch("http://localhost:5000/api/message-difference");
+            const res = await fetch("https://mayur-544z.onrender.com/api/message-difference");
             const json = await res.json();
             if (json.success) {
                 setClean(json.data);
