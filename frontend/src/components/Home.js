@@ -77,7 +77,7 @@ function Home() {
             setSendResult("Data saved!");
             // fetchMessages();
           } else {
-            setSendResult(json.message);
+            setSendResult("❌ "+json.message);
           }
         } catch (e) {
           console.log(`Error: ${e}`);

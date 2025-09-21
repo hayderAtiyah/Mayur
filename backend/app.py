@@ -8,6 +8,7 @@ from flask_cors import CORS
 from pymongo import MongoClient
 from pymongo.errors import ServerSelectionTimeoutError
 from bson.objectid import ObjectId
+from openai import OpenAI
 
 load_dotenv()
 
@@ -28,6 +29,8 @@ except ServerSelectionTimeoutError as e:
 
 db = client["mayur"]
 message_col = db["messages"]
+openai_client = OpenAI(api_key=os.getenv("OPEN_AI_API"))
+
 
 
 @app.route("/api/add-message", methods=["POST"])
@@ -39,6 +42,11 @@ def add_message():
             return jsonify({"success": False, "message": f"{message} already exists"})
         if not message:
             return jsonify({"success": False, "message": "Message not given"})
+        moderation = openai_client.moderations.create(model="omni-moderation-latest", input=[message])
+        print(f"MODERATION: {moderation}")
+        if moderation.results[0].categories:
+            if moderation.results[0].flagged:
+                return jsonify({"success": False, "message": "Message flagged as innappropiate!"})
 
         message_col.insert_one(
             {

@@ -4,5 +4,4 @@
 [✅] navbar (home, highest rated messages, lowest rated messages, all 
 messages, difference between high and low likes, about)
 
-cool animation after rating message
 OpenAI message checking innappropiate
