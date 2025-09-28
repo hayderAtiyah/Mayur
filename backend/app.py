@@ -190,19 +190,18 @@ def all_messages():
         if query:
             filter_query = {"message": {"$regex": query, "$options": "i"}}
         
-        messages = message_col.find(filter_query, {"message": 1, "thumbsDown": 1, "createdAt": 1}).sort([("createdAt", -1)]).skip(skip).limit(limit)
+        messages = message_col.find(filter_query, {"message": 1, "thumbsUp": 1, "thumbsDown": 1, "createdAt": 1}).sort([("createdAt", -1)]).skip(skip).limit(limit)
 
-        items = [
-            {
+        items = []
+
+        for i in messages:
+            items.append({
                 "id": str(i["_id"]),
                 "message": i.get("message", ""),
                 "thumbsUp": i.get("thumbsUp", 0),
                 "thumbsDown": i.get("thumbsDown", 0),
-                "createdAt": i.get("createdAt", ""),
-            }
-
-            for i in messages
-        ]
+                "createdAt": i.get("createdAt", "")
+            })
 
         total = message_col.count_documents(filter_query)
         return jsonify({"success": True, "data": items, "total": total, "limit": limit, "skip": skip})
